@@ -15,6 +15,8 @@ BuildRequires:	golang >= 1.6
 ExclusiveArch:	%{ix86} %{x8664} %{arm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_sbindir	/sbin
+
 ## Disable debug packages.
 %define		_enable_debug_packages 0
 
