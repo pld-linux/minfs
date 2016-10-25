@@ -68,5 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.md
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/db
 %attr(755,root,root) %{_sbindir}/minfs
 %attr(755,root,root) %{_sbindir}/mount.minfs
