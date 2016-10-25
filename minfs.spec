@@ -11,6 +11,7 @@ License:	Apache v2.0
 Group:		Development/Building
 Source0:	https://github.com/minio/minfs/archive/%{tag}.tar.gz
 # Source0-md5:	9e5ef301294132f7675644ea5381197a
+Source1:	config.json
 BuildRequires:	golang >= 1.6
 ExclusiveArch:	%{ix86} %{x8664} %{arm}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -61,6 +62,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir}/%{name}/db}
 install -p %{name} $RPM_BUILD_ROOT%{_sbindir}
 install -p mount.minfs $RPM_BUILD_ROOT%{_sbindir}
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,7 +70,9 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.md
-%dir %{_sysconfdir}/%{name}
-%dir %{_sysconfdir}/%{name}/db
+%dir %attr(750,root,root) %{_sysconfdir}/%{name}
+# XXX: FHS: 'db' should go to /var/lib/%{name}?
+%dir %attr(750,root,root) %{_sysconfdir}/%{name}/db
+%config(noreplace) %attr(640,root,root) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/config.json
 %attr(755,root,root) %{_sbindir}/minfs
 %attr(755,root,root) %{_sbindir}/mount.minfs
